@@ -17,13 +17,25 @@ public class Sort
     }
     
     private static void quickSortInternal(String[] list, int start, int end) {
-
-        if (start == end) {
+        if (start >= end) {
 	    return;
         }
 	String pivot = list[start];
 	// Point to the last item that is smaller than the pivot.                                                                                                                                                 
         int partition = start;
+	// Invariant: after each iteration, any item in [start + 1, partition] is
+	// less than pivot or start == partition and any item in
+	// [partition + 1, index] is greater or equal to pivot or
+	// partition == index.
+	// Notice partition <= index through the iterations.
+	// After going through all the items in [start + 1, end], partition is:
+	// - equals start, which means no item is smaller than pivot.
+	// - equals end, which means no item is greater or equal to pivot.
+	// - items between [start + 1, partition] is smaller than pivot; items between
+	//   [partition + 1, index] is greater or equal to pivot.
+	// In any of the above three cases, swap list[start] with list[partition] will
+	// make any item in subarray [start, partition) smaller than list[partition] and
+	// any item in subarray (partition, end] greater or equal to list[partition].
 	for (int index = start + 1; index <= end; index++) {
 	    if (list[index].compareTo(pivot) < 0) {
 		String temp = list[index];
@@ -36,10 +48,10 @@ public class Sort
             list[start] = list[partition];
 	    list[partition] = pivot;
         }
-	if (start < partition) {
-            quickSortInternal(list, start, partition);
+	if (start < partition - 1) {
+            quickSortInternal(list, start, partition - 1);
 	}
-	if (partition +1 < end) {
+	if (partition + 1 < end) {
 	    quickSortInternal(list, partition + 1, end);
 	}
     }
