@@ -20,7 +20,7 @@ public class BST {
 	this.root = root;
     }
 
-    // Assume it is a tree node under root.
+    // Assume "node" is a tree node under root.
     // returns null if it is the last node.
     Node nextWithParent(Node node) {
 	if (node == null) {
@@ -33,9 +33,8 @@ public class BST {
 	    }
 	    return node;
 	} else {
-	    Node curr = node;
 	    while (node.parent != null &&
-		   node.parent.left != node) {
+		   node.parent.right == node) {
 		node = node.parent;
 	    }
 	    // If node == root, next is null.
