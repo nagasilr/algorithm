@@ -99,32 +99,29 @@ public class Sort
         // Generate heap
         for (int i = 1; i < list.length; i++) {
             int child = i;
+	    int parent = ((child + 1) >> 1) - 1;
             // upward heapify
-            while (child > 0) {
-		int parent = ((child + 1) >> 1) - 1;
-                // put break is good?
-		if (list[parent].compareTo(list[child]) < 0) {
-		    String temp = list[parent];
-		    list[parent] = list[child];
-		    list[child] = temp;
-                    child = parent;
-                } else {
-                    break;
-                }
+            while (child > 0 &&
+		   list[parent].compareTo(list[child]) < 0) {
+                String temp = list[parent];
+	        list[parent] = list[child];
+	        list[child] = temp;
+                child = parent;
+		parent = ((child + 1) >> 1) - 1;
             }
         }
         
-        for (int i = 0; i < list.length - 1; i++) {
-            int parent = 0, boundary = list.length - i - 1;
-            String last = list[boundary];
-	    list[boundary] = list[parent];
+        for (int i = list.length - 1; i > 0; i--) {
+            int parent = 0;
+            String last = list[i];
+	    list[i] = list[parent];
             list[parent] = last;
             while (true) {
 		int child1 = ((parent + 1) << 1) - 1, child2 = (parent + 1) << 1;
-                if (child1 < boundary && list[child1].compareTo(last) > 0 ||
-		    child2 < boundary && list[child2].compareTo(last) > 0) {
+                if (child1 < i && list[child1].compareTo(last) > 0 ||
+		    child2 < i && list[child2].compareTo(last) > 0) {
                     int index = child1;
-                    if (child2 < boundary && list[child1].compareTo(list[child2]) < 0) {
+                    if (child2 < i && list[child1].compareTo(list[child2]) < 0) {
 			index = child2;
                     }
                     String temp = list[index];
